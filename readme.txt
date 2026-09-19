@@ -4,9 +4,9 @@ Contributors: protport4991
 Author: Andriy Prots
 Tags: like button, voting, rating, vote, like, dislike, contest, rate, like counter, likes counter, post, posts, wordpress, comments,  page, pages, ratings, reviews, seo, vote, votes, plugin, voting button, wordpress vote post, wp like post, wp like plugin
 Requires at least: 2.8
-Tested up to: 4.9.6
-Requires PHP: 5.2.4
-Stable tag: 1.0.2
+Tested up to: 6.6
+Requires PHP: 5.6
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,11 @@ Pro Like Button has been translated into the following languages:
 
 
 == Changelog ==
+
+= 1.0.5 =
+Security: fixed an unauthenticated SQL injection in the like/dislike AJAX handler (postid was concatenated into SQL; now validated as an integer and passed through $wpdb->prepare()). Reported by Enrico Marcolini, Claudio Marchesini and Dottor Marc.
+Add "Where to display" option for Comments
+Add "Who can like" setting (Anyone visiting / Members only)
 
 = 1.0.3 =
 Add new author url

@@ -1,13 +1,15 @@
 jQuery(document).ready(function(){
           // when the user clicks on like
           jQuery('.like').on('click', function(){
-               
+
                var postid = jQuery(this).data('id');
+               var type = jQuery(this).data('type') || 'post';
                    $post = jQuery(this);
                var data = {
                     action: 'id',
                     nonce: myajax.nonce,
                     postid: postid,
+                    type: type,
                     liked: 1,
                };
                // $(this).addClass('user-active_like');
@@ -22,11 +24,13 @@ jQuery(document).ready(function(){
           jQuery('.unlike').on('click', function(){
 
                var postid = jQuery(this).data('id');
+               var type = jQuery(this).data('type') || 'post';
                    $post = jQuery(this);
                var data = {
                     action: 'id',
                     nonce: myajax.nonce,
                     postid: postid,
+                    type: type,
                     unliked: 1,
                };
                // $(this).addClass('user-active_dislike');

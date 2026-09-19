@@ -91,3 +91,14 @@
 	border: 3px solid red !important;
 }
 */
+.wrapp_like_buttons.prolike-locked{
+	font-size: 12px;
+}
+.prolike-login-prompt{
+	text-decoration: underline;
+	cursor: pointer;
+}
+.wrapp_like_buttons.prolike-comment{
+	margin-top: 6px;
+	width: auto;
+}

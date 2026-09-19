@@ -1,29 +1,69 @@
 
+var editor;
+
 jQuery(document).ready( function($){
-    
-    var updateCSS = function(){ $("#plb_your_style_css").val( editor.getSession().getValue() ); }
+
+    if ( document.getElementById('customCss') ) {
+        editor = ace.edit("customCss");
+        editor.setTheme("ace/theme/monokai");
+        editor.getSession().setMode("ace/mode/css");
+    }
+
+    var updateCSS = function(){
+        if ( editor ) {
+            $("#plb_your_style_css").val( editor.getSession().getValue() );
+        }
+    }
     $("#save-custom-css-form").submit( updateCSS );
-    
+
 });
 
-var editor = ace.edit("customCss");
-editor.setTheme("ace/theme/monokai");
-editor.getSession().setMode("ace/mode/css");
+jQuery(document).ready(function($){
 
-$(document).ready(function($){
-   
 
     $(".drop_down_image").click(function(){
-        
+
     });
 
-    // $('#view ').addAttr()
-    // tabs
-    $('.tab_button').click(function(){
-        $(".tab_content").removeClass("active").eq($(this).index()).addClass("active");
-        $('.tab_button').removeClass("active").eq($(this).index()).addClass("active");
+    // Tabs
+    $('.plb-tab').click(function(){
+        var tab = $(this).data('tab');
+        $('.plb-tab').removeClass('is-active');
+        $(this).addClass('is-active');
+        $('.plb-panel').each(function(){
+            $(this).prop('hidden', $(this).data('panel') !== tab);
+        });
     });
-    
+
+    // Layout page segmented control
+    $('.plb-layout-segmented .plb-seg').click(function(){
+        $(this).siblings('.plb-seg').removeClass('is-active');
+        $(this).addClass('is-active');
+        $(this).closest('.plb-field').find('.plb-layout-input').val($(this).data('value'));
+    });
+
+    // Copy shortcode
+    $('#plb-copy').click(function(){
+        var $btn = $(this);
+        var text = $('#plb-shortcode').text().trim();
+        var done = function(){
+            var prev = $btn.text();
+            $btn.text('Copied');
+            setTimeout(function(){ $btn.text(prev); }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, done);
+        } else {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
+            done();
+        }
+    });
+
     // media upload
     var custom_uploader1;
     var custom_uploader2;
