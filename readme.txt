@@ -6,7 +6,7 @@ Tags: like button, voting, rating, vote, like, dislike, contest, rate, like coun
 Requires at least: 2.8
 Tested up to: 6.6
 Requires PHP: 5.6
-Stable tag: 1.0.5
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ If you’re looking for one of the best and fastest ways to add like and dislike
 *  	10 button Templates (10 types of button layouts)
 *   Custom Like & Dislike buttons texts
 *   Available for logged and non-logged users
-*   24x7 Support
+*   Support
 *   Clean code (there is nothing redundant in the code)
 
 
@@ -60,6 +60,17 @@ Pro Like Button has been translated into the following languages:
 
 
 == Changelog ==
+
+= 2.0 =
+Add Statistics dashboard (likes/dislikes overview and sorting in wp-admin)
+Add rate-limiting for the like/dislike AJAX handler to reduce spam and abuse
+Add reCAPTCHA support for the like/dislike action
+Add structured data (schema.org) output for like/dislike counts
+Add WooCommerce product support
+Redesign the plugin settings/admin pages
+Fix several PHP 8+ warnings (activation, save form, posts_clauses)
+Fix "Array to string conversion" notice in the shortcode handler
+Unify text domain to `prolike-button` across the codebase
 
 = 1.0.5 =
 Security: fixed an unauthenticated SQL injection in the like/dislike AJAX handler (postid was concatenated into SQL; now validated as an integer and passed through $wpdb->prepare()). Reported by Enrico Marcolini, Claudio Marchesini and Dottor Marc.

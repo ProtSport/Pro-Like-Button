@@ -38,7 +38,7 @@ function plb_add_views_sortable_column($sortable_columns){
 add_filter( 'posts_clauses', 'plb_add_column_views_request', 10, 2 );
 function plb_add_column_views_request( $clauses, $wp_query ){
 	global $wpdb;
-	if( 'likes_likes' != $wp_query->query['orderby'] )
+	if( 'likes_likes' != $wp_query->get('orderby') )
 		return $clauses;
 	global $wpdb;
 	$clauses['orderby']  = " {$wpdb->posts}.counter_like ";

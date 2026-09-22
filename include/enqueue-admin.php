@@ -8,8 +8,11 @@
 
 
 	function plb_load_admin_scripts($hook){
-		// Only load on this plugin's own settings page, not on every wp-admin screen.
-		if ( strpos( $hook, 'prolike_first_plugin' ) === false ) {
+		// Only load on this plugin's own admin pages, not on every wp-admin screen.
+		// $plb_admin_page_hooks is populated in plb_like_add_admin_page() with the
+		// exact hook suffixes add_menu_page()/add_submenu_page() returned.
+		global $plb_admin_page_hooks;
+		if ( empty( $plb_admin_page_hooks ) || ! in_array( $hook, $plb_admin_page_hooks, true ) ) {
 			return;
 		}
 

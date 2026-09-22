@@ -89,6 +89,11 @@
 	    if (($display & 16) && is_archive()) {
 	        $should_display = true;
 	    }
+	    // function_exists() guard: is_product() only exists when WooCommerce is
+	    // active, so sites without it never touch a missing-function fatal.
+	    if (($display & 32) && function_exists('is_product') && is_product()) {
+	        $should_display = true;
+	    }
 
 	    if ($should_display) {
 	        if ($beforeafter == 'before') {

@@ -1,0 +1,99 @@
+<?php
+
+	/*
+	=======================================================
+		Statistics page: totals, today/this-week activity,
+		and the top liked posts. See plans/02-stats-dashboard.md
+	=======================================================
+	*/
+
+	function plb_stats_page(){
+		global $wpdb;
+		$posts_table = $wpdb->prefix . 'posts';
+		$votes_table = $wpdb->prefix . 'prolike_votes';
+
+		$totals = $wpdb->get_row( "SELECT SUM(counter_like) AS total_like, SUM(counter_dislike) AS total_dislike FROM $posts_table", ARRAY_A );
+		$total_like = isset( $totals['total_like'] ) ? (int) $totals['total_like'] : 0;
+		$total_dislike = isset( $totals['total_dislike'] ) ? (int) $totals['total_dislike'] : 0;
+
+		$today = current_time( 'Y-m-d' );
+		$votes_today = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $votes_table WHERE DATE(created_at) = %s", $today ) );
+
+		$week_start = date( 'Y-m-d', strtotime( 'monday this week', current_time( 'timestamp' ) ) );
+		$prev_week_start = date( 'Y-m-d', strtotime( '-7 days', strtotime( $week_start ) ) );
+
+		$votes_this_week = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $votes_table WHERE created_at >= %s", $week_start . ' 00:00:00' ) );
+		$votes_prev_week = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $votes_table WHERE created_at >= %s AND created_at < %s", $prev_week_start . ' 00:00:00', $week_start . ' 00:00:00' ) );
+
+		$week_change = null;
+		if ( $votes_prev_week > 0 ) {
+			$week_change = round( ( ( $votes_this_week - $votes_prev_week ) / $votes_prev_week ) * 100 );
+		}
+
+		$top_posts = $wpdb->get_results( "SELECT ID, post_title, counter_like, counter_dislike FROM $posts_table WHERE counter_like > 0 OR counter_dislike > 0 ORDER BY counter_like DESC LIMIT 10" );
+		?>
+		<div class="plb-wrap">
+		<div class="plb-card">
+
+			<header class="plb-head plb-head-simple">
+				<h1 class="plb-title"><?php _e( 'ProLike Button — Statistics', 'prolikebutton' ); ?></h1>
+			</header>
+
+			<div class="plb-body-rows">
+
+				<div class="plb-stats-cards">
+					<div class="plb-stat-card">
+						<div class="plb-stat-value"><?php echo esc_html( $total_like ); ?></div>
+						<div class="plb-stat-label"><?php _e( 'Total likes', 'prolikebutton' ); ?></div>
+					</div>
+					<div class="plb-stat-card">
+						<div class="plb-stat-value"><?php echo esc_html( $total_dislike ); ?></div>
+						<div class="plb-stat-label"><?php _e( 'Total dislikes', 'prolikebutton' ); ?></div>
+					</div>
+					<div class="plb-stat-card">
+						<div class="plb-stat-value"><?php echo esc_html( $votes_today ); ?></div>
+						<div class="plb-stat-label"><?php _e( 'Votes today', 'prolikebutton' ); ?></div>
+					</div>
+					<div class="plb-stat-card">
+						<div class="plb-stat-value">
+							<?php echo esc_html( $votes_this_week ); ?>
+							<?php if ( $week_change !== null ) : ?>
+								<span class="plb-stat-delta <?php echo ( $week_change >= 0 ) ? 'is-up' : 'is-down'; ?>">
+									<?php echo esc_html( ( $week_change >= 0 ? '+' : '' ) . $week_change ) . '%'; ?>
+								</span>
+							<?php endif; ?>
+						</div>
+						<div class="plb-stat-label"><?php _e( 'Votes this week (vs last week)', 'prolikebutton' ); ?></div>
+					</div>
+				</div>
+
+				<h2 class="plb-stats-subtitle"><?php _e( 'Top liked posts', 'prolikebutton' ); ?></h2>
+				<?php if ( empty( $top_posts ) ) : ?>
+					<p class="plb-help"><?php _e( 'No votes yet.', 'prolikebutton' ); ?></p>
+				<?php else : ?>
+					<table class="plb-stats-table">
+						<thead>
+							<tr>
+								<th><?php _e( 'Post', 'prolikebutton' ); ?></th>
+								<th><?php _e( 'Likes', 'prolikebutton' ); ?></th>
+								<th><?php _e( 'Dislikes', 'prolikebutton' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $top_posts as $post ) : ?>
+								<tr>
+									<td><a href="<?php echo esc_url( get_edit_post_link( $post->ID ) ); ?>"><?php echo esc_html( $post->post_title !== '' ? $post->post_title : '(no title)' ); ?></a></td>
+									<td><?php echo esc_html( $post->counter_like ); ?></td>
+									<td><?php echo esc_html( $post->counter_dislike ); ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				<?php endif; ?>
+
+			</div>
+
+		</div>
+		</div>
+		<?php
+	}

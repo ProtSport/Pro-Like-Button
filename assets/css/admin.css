@@ -36,6 +36,9 @@
 
 /* Header + tabs */
 .plb-head { padding: 22px 28px 0; border-bottom: 1px solid var(--plb-line); }
+/* Headers with no tabs below them need their own bottom breathing room —
+   the tabs' padding normally supplies that space. */
+.plb-head.plb-head-simple { padding-bottom: 18px; }
 .plb-title { margin: 0; font-size: 18px; font-weight: 600; }
 .plb-tabs { display: flex; gap: 20px; margin-top: 14px; }
 .plb-tab {
@@ -154,6 +157,46 @@
   cursor: pointer;
 }
 .plb-save:hover { background: var(--plb-accent-dark); border-color: var(--plb-accent-dark); }
+
+/* Statistics page */
+.plb-stats-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px 0 8px;
+}
+.plb-stat-card {
+  padding: 14px 16px;
+  border: 1px solid var(--plb-line);
+  border-radius: 4px;
+  background: #fbfbfc;
+}
+.plb-stat-value { font-size: 22px; font-weight: 600; color: var(--plb-ink); }
+.plb-stat-label { margin-top: 4px; font-size: 12px; color: var(--plb-muted); }
+.plb-stat-delta { font-size: 12px; font-weight: 600; margin-left: 4px; }
+.plb-stat-delta.is-up { color: #00a32a; }
+.plb-stat-delta.is-down { color: #d63638; }
+
+.plb-stats-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 22px 0 10px;
+  padding: 0;
+  border: none;
+  color: var(--plb-ink);
+}
+.plb-stats-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.plb-stats-table th, .plb-stats-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--plb-line-soft);
+}
+.plb-stats-table th:first-child, .plb-stats-table td:first-child { padding-left: 0; }
+.plb-stats-table th { color: var(--plb-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; }
+
+@media (max-width: 640px) {
+  .plb-stats-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 /* Custom tab: reskin the WordPress Settings API's default table markup
    (do_settings_sections()) to look like the .plb-row rows above. */
