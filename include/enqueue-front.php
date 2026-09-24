@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 	function plb_enqueue_scripts() {
 		wp_enqueue_script( 'pro_like_post_script', plugins_url( '../assets/js/like_click.js', __FILE__ ), array('jquery') );

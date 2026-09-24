@@ -1,4 +1,7 @@
-<?php 	function plb_pro_like_button($content = NULL) {
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+	function plb_pro_like_button($content = NULL) {
 		
 	   
 	    global $wpdb, $plb_bac_image,$plb_bac_image_dis;

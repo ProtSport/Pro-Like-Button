@@ -1,4 +1,6 @@
-<?php 
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 add_filter('manage_posts_columns', 'plb_my_columns');
 function plb_my_columns($columns) {
     $columns['likes'] = 'Likes';

@@ -13,6 +13,7 @@ Author URI: https://github.com/ProtSport
 Text Domain: prolike-button
 */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 global $wpdb,$plb_bac_image,$plb_bac_image_dis,$plb_likebtn_styles;
 
@@ -70,8 +71,8 @@ function plb_prolike_deactivate(){
 	// By attached the function to the page ProLikePlugin
 
 	function plb_custom_setting(){
-		register_setting( 'plb-image-setting', 'plb_background-image-field-like');
-		register_setting( 'plb-image-setting', 'plb_background-image-field-dislike');
+		register_setting( 'plb-image-setting', 'plb_background-image-field-like', array( 'sanitize_callback' => 'esc_url_raw' ) );
+		register_setting( 'plb-image-setting', 'plb_background-image-field-dislike', array( 'sanitize_callback' => 'esc_url_raw' ) );
 		register_setting( 'plb-image-setting', 'plb_your_style_css' , 'plb_sanitize_custom_css' );
 		add_settings_section( 'plb-sidebar-options', 'CSS', 'plb_custom_css_section_callback', 'plb_image_css_subpage' );
 		add_settings_section( 'plb-sidebar-image', 'Image', 'plb_sidebar_options', 'plb_image_css_subpage' );
