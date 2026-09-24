@@ -4,7 +4,7 @@
 	    global $wpdb, $plb_bac_image,$plb_bac_image_dis;
 	    $table = $wpdb->prefix . 'prolike';
 	    $table_name_post = $wpdb->prefix . 'posts';
-	    $myrows = $wpdb->get_results("SELECT * FROM $table WHERE id = 1");
+	    $myrows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE id = 1", $table ) );
 	    if (empty($myrows)) {
 	    	return $content;
 	    }
@@ -12,12 +12,12 @@
 	    $current_user = wp_get_current_user();
 		$usr_id=$current_user->ID;
 
-	    $myrows_id = $wpdb->get_results("SELECT * FROM $table_name_post" );
-		$carently_likes_dislikes = $wpdb->get_row("SELECT counter_like, counter_dislike FROM $table_name_post WHERE id = $current_like_ID", ARRAY_A);
-		$carently_like_text = $wpdb->get_row("SELECT layout,position,text_like,text_dislike,btn_size,imagelike,imagedislike,output_shortcode FROM $table", ARRAY_A);
-		
+	    $myrows_id = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i", $table_name_post ) );
+		$carently_likes_dislikes = $wpdb->get_row( $wpdb->prepare( "SELECT counter_like, counter_dislike FROM %i WHERE id = %d", $table_name_post, $current_like_ID ), ARRAY_A );
+		$carently_like_text = $wpdb->get_row( $wpdb->prepare( "SELECT layout,position,text_like,text_dislike,btn_size,imagelike,imagedislike,output_shortcode FROM %i", $table ), ARRAY_A );
 
-		$select_view = $wpdb->get_row("SELECT view FROM $table", ARRAY_A);
+
+		$select_view = $wpdb->get_row( $wpdb->prepare( "SELECT view FROM %i", $table ), ARRAY_A );
 
 		$cookie_ip_like = $_SERVER['REMOTE_ADDR'];
 		$cookie_ip_dislike = $_SERVER['REMOTE_ADDR'];
@@ -41,7 +41,7 @@
 	    if (!$can_user_like) {
 	    	$login_url = esc_url( wp_login_url( get_permalink() ) );
 	    	$like_dis_button = "<div class='wrapp_like_buttons prolike-locked ". esc_html($carently_like_text['position']) ."'>
-	    		<a href='".$login_url."' class='prolike-login-prompt'>".esc_html__('Log in to like', 'prolike')."</a>
+	    		<a href='".$login_url."' class='prolike-login-prompt'>".esc_html__('Log in to like', 'prolike-button')."</a>
 	    	</div>";
 	    }
 	    else if($plb_bac_image != '' || $plb_bac_image_dis != ''){
@@ -117,7 +117,7 @@
 		}
 
 		$table = $wpdb->prefix . 'prolike';
-		$myrows = $wpdb->get_results("SELECT * FROM $table WHERE id = 1");
+		$myrows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE id = 1", $table ) );
 
 		if (empty($myrows) || !($myrows[0]->display & 8)) {
 			return $comment_text;
@@ -130,13 +130,13 @@
 		if (!$can_user_like) {
 			$login_url = esc_url( wp_login_url( get_permalink() ) );
 			$buttons = "<div class='wrapp_like_buttons prolike-locked prolike-comment ". esc_html($myrows[0]->position) ."'>
-				<a href='".$login_url."' class='prolike-login-prompt'>".esc_html__('Log in to like', 'prolike')."</a>
+				<a href='".$login_url."' class='prolike-login-prompt'>".esc_html__('Log in to like', 'prolike-button')."</a>
 			</div>";
 			return $comment_text . $buttons;
 		}
 
 		$comments_table = $wpdb->prefix . 'comments';
-		$counts = $wpdb->get_row("SELECT counter_like, counter_dislike FROM $comments_table WHERE comment_ID = $comment_id", ARRAY_A);
+		$counts = $wpdb->get_row( $wpdb->prepare( "SELECT counter_like, counter_dislike FROM %i WHERE comment_ID = %d", $comments_table, $comment_id ), ARRAY_A );
 
 		$user_alredy_like = isset($_COOKIE['cookie_ip_comment_like'.$comment_id]) ? 'active_like' : '';
 		$user_alredy_dislike = isset($_COOKIE['cookie_ip_comment_dislike'.$comment_id]) ? 'active_dislike' : '';
@@ -155,7 +155,7 @@
 
 		global $wpdb;
 	  	$table = $wpdb->prefix . 'prolike';
-		$output_shortcode_ifno = $wpdb->get_row("SELECT output_shortcode FROM $table", ARRAY_A);
+		$output_shortcode_ifno = $wpdb->get_row( $wpdb->prepare( "SELECT output_shortcode FROM %i", $table ), ARRAY_A );
 
 		// The settings row may not exist yet (e.g. right after activation, before the
 		// activation hooks that create it have run) — fall back to the default instead

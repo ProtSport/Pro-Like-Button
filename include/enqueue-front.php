@@ -7,7 +7,7 @@
 		// and site key are actually configured.
 		global $wpdb;
 		$prolike_table = $wpdb->prefix . 'prolike';
-		$settings = $wpdb->get_row( "SELECT recaptcha_version, recaptcha_site_key FROM $prolike_table WHERE id = 1", ARRAY_A );
+		$settings = $wpdb->get_row( $wpdb->prepare( "SELECT recaptcha_version, recaptcha_site_key FROM %i WHERE id = 1", $prolike_table ), ARRAY_A );
 		if ( ! empty( $settings ) && in_array( $settings['recaptcha_version'], array( 'v2', 'v3' ), true ) && ! empty( $settings['recaptcha_site_key'] ) ) {
 			if ( $settings['recaptcha_version'] === 'v3' ) {
 				wp_enqueue_script( 'plb_recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $settings['recaptcha_site_key'] ), array(), null, true );
@@ -24,7 +24,7 @@
 	function plb_output_recaptcha_v2_widget() {
 		global $wpdb;
 		$prolike_table = $wpdb->prefix . 'prolike';
-		$settings = $wpdb->get_row( "SELECT recaptcha_version, recaptcha_site_key FROM $prolike_table WHERE id = 1", ARRAY_A );
+		$settings = $wpdb->get_row( $wpdb->prepare( "SELECT recaptcha_version, recaptcha_site_key FROM %i WHERE id = 1", $prolike_table ), ARRAY_A );
 		if ( empty( $settings ) || $settings['recaptcha_version'] !== 'v2' || empty( $settings['recaptcha_site_key'] ) ) {
 			return;
 		}
@@ -46,7 +46,7 @@
 	function plb_myajax_data(){
 			global $wpdb;
 			$prolike_table = $wpdb->prefix . 'prolike';
-			$settings = $wpdb->get_row( "SELECT recaptcha_version, recaptcha_site_key FROM $prolike_table WHERE id = 1", ARRAY_A );
+			$settings = $wpdb->get_row( $wpdb->prepare( "SELECT recaptcha_version, recaptcha_site_key FROM %i WHERE id = 1", $prolike_table ), ARRAY_A );
 
 			wp_localize_script( 'pro_like_post_script', 'myajax',
 				array(
@@ -100,8 +100,8 @@
 		$votes_table = $wpdb->prefix . 'prolike_votes';
 		$ip_hash = hash( 'sha256', $ip . wp_salt() );
 		$existing = $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*) FROM $votes_table WHERE object_type = %s AND object_id = %d AND ip_hash = %s",
-			$object_type, $object_id, $ip_hash
+			"SELECT COUNT(*) FROM %i WHERE object_type = %s AND object_id = %d AND ip_hash = %s",
+			$votes_table, $object_type, $object_id, $ip_hash
 		) );
 		return ( (int) $existing ) > 0;
 	}
@@ -176,7 +176,7 @@
 		global $wpdb;
 
 		$prolike_table = $wpdb->prefix . 'prolike';
-		$settings = $wpdb->get_row( "SELECT who_can_like, rate_limit_enabled, recaptcha_version, recaptcha_secret_key FROM $prolike_table WHERE id = 1", ARRAY_A );
+		$settings = $wpdb->get_row( $wpdb->prepare( "SELECT who_can_like, rate_limit_enabled, recaptcha_version, recaptcha_secret_key FROM %i WHERE id = 1", $prolike_table ), ARRAY_A );
 		if ( ! empty( $settings ) && $settings['who_can_like'] === 'members' && ! is_user_logged_in() ) {
 			wp_die();
 		}
@@ -213,21 +213,21 @@
 
 			// counter like post
 			$carently_likes_likes = $wpdb->get_row(
-				$wpdb->prepare( "SELECT counter_like, counter_dislike FROM $table_name_post WHERE $id_column = %d", $postid ),
+				$wpdb->prepare( "SELECT counter_like, counter_dislike FROM %i WHERE %i = %d", $table_name_post, $id_column, $postid ),
 				ARRAY_A
 			);
 			$var_like = isset( $carently_likes_likes['counter_like'] ) ? (int) $carently_likes_likes['counter_like'] : 0;
 			// check is there or not cookies, or this IP already voted on this item
 
 			if ( isset( $_COOKIE[ $cookie_key . $postid ] ) || ( $rate_limiting_on && plb_ip_already_voted( $type, $postid ) ) ) {
-				$wpdb->query( $wpdb->prepare( "UPDATE $table_name_post SET counter_like = %d WHERE $id_column = %d", $var_like, $postid ) );
+				$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_like = %d WHERE %i = %d", $table_name_post, $var_like, $id_column, $postid ) );
 				echo $var_like;
 				wp_die();
 			}
 			setcookie( $cookie_key . '_like' . $postid, '1', time() + 62208000, '/', $_SERVER['HTTP_HOST'] );
 
 			// add like database and frontend
-			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_post SET counter_like = %d WHERE $id_column = %d", $var_like + 1, $postid ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_like = %d WHERE %i = %d", $table_name_post, $var_like + 1, $id_column, $postid ) );
 			plb_log_vote( $type, $postid, 'like' );
 			echo $var_like + 1;
 
@@ -240,21 +240,21 @@
 
 			// counter like post
 			$carently_likes_dislikes = $wpdb->get_row(
-				$wpdb->prepare( "SELECT counter_like, counter_dislike FROM $table_name_post WHERE $id_column = %d", $postid ),
+				$wpdb->prepare( "SELECT counter_like, counter_dislike FROM %i WHERE %i = %d", $table_name_post, $id_column, $postid ),
 				ARRAY_A
 			);
 			$var_dislike = isset( $carently_likes_dislikes['counter_dislike'] ) ? (int) $carently_likes_dislikes['counter_dislike'] : 0;
 
 			// check is there or not cookies, or this IP already voted on this item
 			if ( isset( $_COOKIE[ $cookie_key . $postid ] ) || ( $rate_limiting_on && plb_ip_already_voted( $type, $postid ) ) ) {
-				$wpdb->query( $wpdb->prepare( "UPDATE $table_name_post SET counter_dislike = %d WHERE $id_column = %d", $var_dislike, $postid ) );
+				$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_dislike = %d WHERE %i = %d", $table_name_post, $var_dislike, $id_column, $postid ) );
 				echo $var_dislike;
 				wp_die();
 			}
 			setcookie( $cookie_key . '_dislike' . $postid, '1', time() + 62208000, '/', $_SERVER['HTTP_HOST'] );
 
 			// add like database and frontend
-			$wpdb->query( $wpdb->prepare( "UPDATE $table_name_post SET counter_dislike = %d WHERE $id_column = %d", $var_dislike - 1, $postid ) );
+			$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_dislike = %d WHERE %i = %d", $table_name_post, $var_dislike - 1, $id_column, $postid ) );
 			plb_log_vote( $type, $postid, 'dislike' );
 			echo $var_dislike - 1;
 

@@ -10,6 +10,7 @@ Description: Like and dislike each post
 Author: Andriy Prots
 Version: 2.0
 Author URI: https://github.com/ProtSport
+Text Domain: prolike-button
 */
 
 
@@ -23,9 +24,9 @@ register_uninstall_hook(__FILE__, 'plb_prolike_unistall');
 function plb_prolike_unistall() {
     global $wpdb;
 	$table = $wpdb->prefix . 'prolike';
-    $wpdb->query("DROP TABLE IF EXISTS $table;");
+    $wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS %i", $table ) );
     $votes_table = $wpdb->prefix . 'prolike_votes';
-    $wpdb->query("DROP TABLE IF EXISTS $votes_table;");
+    $wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS %i", $votes_table ) );
 }
 
 register_deactivation_hook( __FILE__, 'plb_prolike_deactivate' );
@@ -44,7 +45,7 @@ function plb_prolike_deactivate(){
 	function plb_like_add_admin_page(){
 		global $wpdb;
 	    $table = $wpdb->prefix . 'prolike';
-	    $myrows = $wpdb->get_results("SELECT * FROM $table WHERE id = 1");
+	    $myrows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE id = 1", $table ) );
 
 		// WordPress derives each submenu's hook suffix from the parent's menu
 		// TITLE (not its slug), so a substring check against the slug misses
@@ -150,7 +151,7 @@ function plb_prolike_deactivate(){
 
 	function plb_column_exists($table, $column){
 		global $wpdb;
-		$result = $wpdb->get_results($wpdb->prepare("SHOW COLUMNS FROM $table LIKE %s", $column));
+		$result = $wpdb->get_results($wpdb->prepare("SHOW COLUMNS FROM %i LIKE %s", $table, $column));
 		return !empty($result);
 	}
 
@@ -165,28 +166,28 @@ function plb_prolike_deactivate(){
 		$votes_table = $wpdb->prefix . 'prolike_votes';
 
 		if (!plb_column_exists($prolike_table, 'who_can_like')) {
-			$wpdb->query("ALTER TABLE $prolike_table ADD who_can_like VARCHAR(20) NOT NULL DEFAULT 'anyone'");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD who_can_like VARCHAR(20) NOT NULL DEFAULT 'anyone'", $prolike_table ) );
 		}
 		if (!plb_column_exists($comments_table, 'counter_like')) {
-			$wpdb->query("ALTER TABLE $comments_table ADD counter_like INT(1) NOT NULL DEFAULT 0");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD counter_like INT(1) NOT NULL DEFAULT 0", $comments_table ) );
 		}
 		if (!plb_column_exists($comments_table, 'counter_dislike')) {
-			$wpdb->query("ALTER TABLE $comments_table ADD counter_dislike INT(1) NOT NULL DEFAULT 0");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD counter_dislike INT(1) NOT NULL DEFAULT 0", $comments_table ) );
 		}
 		if (!plb_column_exists($prolike_table, 'rate_limit_enabled')) {
-			$wpdb->query("ALTER TABLE $prolike_table ADD rate_limit_enabled VARCHAR(3) NOT NULL DEFAULT 'no'");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD rate_limit_enabled VARCHAR(3) NOT NULL DEFAULT 'no'", $prolike_table ) );
 		}
 		if (!plb_column_exists($prolike_table, 'recaptcha_version')) {
-			$wpdb->query("ALTER TABLE $prolike_table ADD recaptcha_version VARCHAR(10) NOT NULL DEFAULT 'none'");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD recaptcha_version VARCHAR(10) NOT NULL DEFAULT 'none'", $prolike_table ) );
 		}
 		if (!plb_column_exists($prolike_table, 'recaptcha_site_key')) {
-			$wpdb->query("ALTER TABLE $prolike_table ADD recaptcha_site_key VARCHAR(255) NOT NULL DEFAULT ''");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD recaptcha_site_key VARCHAR(255) NOT NULL DEFAULT ''", $prolike_table ) );
 		}
 		if (!plb_column_exists($prolike_table, 'recaptcha_secret_key')) {
-			$wpdb->query("ALTER TABLE $prolike_table ADD recaptcha_secret_key VARCHAR(255) NOT NULL DEFAULT ''");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD recaptcha_secret_key VARCHAR(255) NOT NULL DEFAULT ''", $prolike_table ) );
 		}
 		if (!plb_column_exists($prolike_table, 'schema_output')) {
-			$wpdb->query("ALTER TABLE $prolike_table ADD schema_output VARCHAR(20) NOT NULL DEFAULT 'none'");
+			$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD schema_output VARCHAR(20) NOT NULL DEFAULT 'none'", $prolike_table ) );
 		}
 
 		// Per-vote log, used by the Statistics page (today / this-week counts).
@@ -218,8 +219,8 @@ function plb_prolike_deactivate(){
 		global $wpdb;
 	    $table_name_post = $wpdb->prefix . 'posts';
 	  	// $wpdb->query('ALTER TABLE' .$table_name_post. 'ADD counter_like');
-	  	$wpdb->query("ALTER TABLE $table_name_post ADD counter_like INT(1) NOT NULL DEFAULT 0");
-	  	$wpdb->query("ALTER TABLE $table_name_post ADD counter_dislike INT(1) NOT NULL DEFAULT 0");
+	  	$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD counter_like INT(1) NOT NULL DEFAULT 0", $table_name_post ) );
+	  	$wpdb->query( $wpdb->prepare( "ALTER TABLE %i ADD counter_dislike INT(1) NOT NULL DEFAULT 0", $table_name_post ) );
 
 	};
 	register_activation_hook(__FILE__, 'plb_create_row');
@@ -229,7 +230,7 @@ function plb_prolike_deactivate(){
 	function plb_install_data() {
 	    global $wpdb;
 	    $table_name = $wpdb->prefix . 'prolike';
-	    $myrows = $wpdb->get_results("SELECT * FROM $table_name WHERE id = 1");
+	    $myrows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE id = 1", $table_name ) );
 
 	    if ($myrows == NULL) {
 	        $wpdb->insert($table_name, array(
@@ -328,7 +329,7 @@ function plb_prolike_deactivate(){
 	function plb_plugin_setting_page(){
 		global $wpdb;
 	    $table_name = $wpdb->prefix . 'prolike';
-	    $myrows = $wpdb->get_results("SELECT * FROM $table_name WHERE id = 1");
+	    $myrows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE id = 1", $table_name ) );
 	    $data_array = array();
 		    if ($myrows[0]->display & 1) {
 		        $display[1] = 'checked';
@@ -381,19 +382,19 @@ function plb_prolike_deactivate(){
 	 <div class="plb-card">
 
 		<header class="plb-head">
-			<h1 class="plb-title"><?php _e( 'ProLike Button', 'prolikebutton' ); ?></h1>
+			<h1 class="plb-title"><?php _e( 'ProLike Button', 'prolike-button' ); ?></h1>
 			<nav class="plb-tabs">
-				<button type="button" class="plb-tab is-active" data-tab="general"><?php _e( 'General setting', 'prolikebutton' ); ?></button>
-				<button type="button" class="plb-tab" data-tab="shortcode"><?php _e( 'Shortcode', 'prolikebutton' ); ?></button>
-				<button type="button" class="plb-tab" data-tab="antispam"><?php _e( 'Anti-spam', 'prolikebutton' ); ?></button>
-				<button type="button" class="plb-tab" data-tab="custom"><?php _e( 'Custom', 'prolikebutton' ); ?></button>
+				<button type="button" class="plb-tab is-active" data-tab="general"><?php _e( 'General setting', 'prolike-button' ); ?></button>
+				<button type="button" class="plb-tab" data-tab="shortcode"><?php _e( 'Shortcode', 'prolike-button' ); ?></button>
+				<button type="button" class="plb-tab" data-tab="antispam"><?php _e( 'Anti-spam', 'prolike-button' ); ?></button>
+				<button type="button" class="plb-tab" data-tab="custom"><?php _e( 'Custom', 'prolike-button' ); ?></button>
 			</nav>
 		</header>
 
 		<?php settings_errors();
 
 	    	$table = $wpdb->prefix . 'prolike';
-			$currently_view = $wpdb->get_row("SELECT view FROM $table");
+			$currently_view = $wpdb->get_row( $wpdb->prepare( "SELECT view FROM %i", $table ) );
 
 			foreach ($currently_view as  $value) {
 				$name_currently_view = $value;
@@ -409,40 +410,40 @@ function plb_prolike_deactivate(){
 			<div class="plb-body-rows">
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Where to display?', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Where to display?', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-inline">
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['4']; ?> value="4"><?php _e('Posts', 'prolike');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['8']; ?> value="8"><?php _e('Comments', 'prolike');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['1']; ?> value="1"><?php _e('Homepage', 'prolike');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['2']; ?> value="2"><?php _e('Pages', 'prolike');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['16']; ?> value="16"><?php _e('Archive page', 'prolike');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['32']; ?> value="32"><?php _e('Products', 'prolike');?><?php echo class_exists('WooCommerce') ? '' : ' (' . esc_html__('requires WooCommerce', 'prolikebutton') . ')'; ?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['4']; ?> value="4"><?php _e('Posts', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['8']; ?> value="8"><?php _e('Comments', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['1']; ?> value="1"><?php _e('Homepage', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['2']; ?> value="2"><?php _e('Pages', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['16']; ?> value="16"><?php _e('Archive page', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['32']; ?> value="32"><?php _e('Products', 'prolike-button');?><?php echo class_exists('WooCommerce') ? '' : ' (' . esc_html__('requires WooCommerce', 'prolike-button') . ')'; ?></label>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Who can like?', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Who can like?', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
-						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo @$who_can_like['anyone']; ?> value="anyone"><?php _e('Anyone visiting', 'prolike');?></label>
-						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo @$who_can_like['members']; ?> value="members"><?php _e('Members only (logged in users)', 'prolike');?></label>
+						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo @$who_can_like['anyone']; ?> value="anyone"><?php _e('Anyone visiting', 'prolike-button');?></label>
+						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo @$who_can_like['members']; ?> value="members"><?php _e('Members only (logged in users)', 'prolike-button');?></label>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e('Layout page', 'prolike');?></div>
+					<div class="plb-label"><?php _e('Layout page', 'prolike-button');?></div>
 					<div class="plb-field">
-						<div class="plb-segmented plb-layout-segmented" role="radiogroup" aria-label="<?php esc_attr_e('Layout page', 'prolike'); ?>">
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'with') ? ' is-active' : ''; ?>" data-value="with"><?php _e('With', 'prolike');?></button>
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'without') ? ' is-active' : ''; ?>" data-value="without"><?php _e('Without', 'prolike');?></button>
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutlike') ? ' is-active' : ''; ?>" data-value="withoutlike"><?php _e('Without Like', 'prolike');?></button>
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutdislike') ? ' is-active' : ''; ?>" data-value="withoutdislike"><?php _e('Without Dislike', 'prolike');?></button>
+						<div class="plb-segmented plb-layout-segmented" role="radiogroup" aria-label="<?php esc_attr_e('Layout page', 'prolike-button'); ?>">
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'with') ? ' is-active' : ''; ?>" data-value="with"><?php _e('With', 'prolike-button');?></button>
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'without') ? ' is-active' : ''; ?>" data-value="without"><?php _e('Without', 'prolike-button');?></button>
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutlike') ? ' is-active' : ''; ?>" data-value="withoutlike"><?php _e('Without Like', 'prolike-button');?></button>
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutdislike') ? ' is-active' : ''; ?>" data-value="withoutdislike"><?php _e('Without Dislike', 'prolike-button');?></button>
 						</div>
 						<input type="hidden" name="layout" class="plb-layout-input" value="<?php echo esc_attr($current_layout); ?>">
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'View', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'View', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select like_form_select_image" name="view" id="view">
 						   <?php foreach ($likebtn_styles as $style): ?>
@@ -454,7 +455,7 @@ function plb_prolike_deactivate(){
 			                    	<div class="drop_down_image">
 										<a class="dropdown-toggle plb-btn-ghost" href="javascript:;" title="Menu">
 											<?php
-												$carently_like_text = $wpdb->get_row("SELECT view FROM $table", ARRAY_A);
+												$carently_like_text = $wpdb->get_row( $wpdb->prepare( "SELECT view FROM %i", $table ), ARRAY_A );
 
 												if($carently_like_text['view'] === 'white'){ ?>
 													<img src="<?php echo plugins_url('/assets/img/icon_button/image1.png', __FILE__ );?>" alt="">
@@ -504,7 +505,7 @@ function plb_prolike_deactivate(){
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Post like text', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Post like text', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-two">
 						<input type="text" class="plb-input" placeholder="Like" value="<?php echo esc_attr($myrows[0]->text_like);?>" name="text_like">
 						<input type="text" class="plb-input" placeholder="Dislike" value="<?php echo esc_attr($myrows[0]->text_dislike);?>" name="text_dislike">
@@ -512,53 +513,53 @@ function plb_prolike_deactivate(){
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Size', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Size', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select" name="btn_size" id="size">
-							<option <?php echo @$btn_size['small']; ?> value="small"><?php _e( 'Small', 'prolikebutton' ); ?></option>
-							<option <?php echo @$btn_size['medium']; ?> value="medium"><?php _e( 'Medium', 'prolikebutton' ); ?></option>
-							<option <?php echo @$btn_size['big']; ?> value="big"><?php _e( 'Big', 'prolikebutton' ); ?></option>
+							<option <?php echo @$btn_size['small']; ?> value="small"><?php _e( 'Small', 'prolike-button' ); ?></option>
+							<option <?php echo @$btn_size['medium']; ?> value="medium"><?php _e( 'Medium', 'prolike-button' ); ?></option>
+							<option <?php echo @$btn_size['big']; ?> value="big"><?php _e( 'Big', 'prolike-button' ); ?></option>
 						</select>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Position', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Position', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select" name="position" id="position">
-							<option <?php echo @$position['left']; ?> value="left"><?php _e( 'Left', 'prolikebutton' ); ?></option>
-							<option <?php echo @$position['right']; ?> value="right"><?php _e( 'Right', 'prolikebutton' ); ?></option>
-							<option <?php echo @$position['center']; ?> value="center"><?php _e( 'Center', 'prolikebutton' ); ?></option>
+							<option <?php echo @$position['left']; ?> value="left"><?php _e( 'Left', 'prolike-button' ); ?></option>
+							<option <?php echo @$position['right']; ?> value="right"><?php _e( 'Right', 'prolike-button' ); ?></option>
+							<option <?php echo @$position['center']; ?> value="center"><?php _e( 'Center', 'prolike-button' ); ?></option>
 						</select>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Before or after posts buttons', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Before or after posts buttons', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select" name="beforeafter" id="beforeafter">
-							<option <?php echo @$beforeafter['before']; ?> value="before"><?php _e( 'Before', 'prolikebutton' ); ?></option>
-							<option <?php echo @$beforeafter['after']; ?> value="after"><?php _e( 'After', 'prolikebutton' ); ?></option>
+							<option <?php echo @$beforeafter['before']; ?> value="before"><?php _e( 'Before', 'prolike-button' ); ?></option>
+							<option <?php echo @$beforeafter['after']; ?> value="after"><?php _e( 'After', 'prolike-button' ); ?></option>
 						</select>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Structured data (SEO)', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Structured data (SEO)', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
 						<select class="plb-select" name="schema_output">
-							<option value="none" <?php selected($schema_output_current, 'none'); ?>><?php _e('Off (default)', 'prolikebutton'); ?></option>
-							<option value="interaction-counter" <?php selected($schema_output_current, 'interaction-counter'); ?>><?php _e('Like/Dislike counts (InteractionCounter)', 'prolikebutton'); ?></option>
-							<option value="aggregate-rating" <?php selected($schema_output_current, 'aggregate-rating'); ?>><?php _e('Rating out of 5, from like/dislike ratio (AggregateRating)', 'prolikebutton'); ?></option>
+							<option value="none" <?php selected($schema_output_current, 'none'); ?>><?php _e('Off (default)', 'prolike-button'); ?></option>
+							<option value="interaction-counter" <?php selected($schema_output_current, 'interaction-counter'); ?>><?php _e('Like/Dislike counts (InteractionCounter)', 'prolike-button'); ?></option>
+							<option value="aggregate-rating" <?php selected($schema_output_current, 'aggregate-rating'); ?>><?php _e('Rating out of 5, from like/dislike ratio (AggregateRating)', 'prolike-button'); ?></option>
 						</select>
-						<p class="plb-help"><?php _e('Adds machine-readable vote data to single posts/pages for search engines and crawlers. Google does not show a dedicated rich result for likes specifically, so treat this as SEO hygiene, not a guaranteed search-result bonus.', 'prolikebutton'); ?></p>
+						<p class="plb-help"><?php _e('Adds machine-readable vote data to single posts/pages for search engines and crawlers. Google does not show a dedicated rich result for likes specifically, so treat this as SEO hygiene, not a guaranteed search-result bonus.', 'prolike-button'); ?></p>
 					</div>
 				</div>
 
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolikebutton' ); ?></button>
+				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolike-button' ); ?></button>
 			</footer>
 			</div>
 
@@ -566,16 +567,16 @@ function plb_prolike_deactivate(){
 			<div class="plb-body-rows">
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Output Like&Dislike Button shortcode', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Output Like&Dislike Button shortcode', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
 						<div class="plb-inline">
-							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo @$output_shortcode['yes']; ?> value="yes"><?php _e( 'Yes', 'prolikebutton' ); ?></label>
-							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo @$output_shortcode['no']; ?> value="no"><?php _e( 'No', 'prolikebutton' ); ?></label>
+							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo @$output_shortcode['yes']; ?> value="yes"><?php _e( 'Yes', 'prolike-button' ); ?></label>
+							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo @$output_shortcode['no']; ?> value="no"><?php _e( 'No', 'prolike-button' ); ?></label>
 						</div>
-						<p class="plb-help"><?php _e( 'When "Yes" is selected, paste this shortcode into any post or page:', 'prolikebutton' ); ?></p>
+						<p class="plb-help"><?php _e( 'When "Yes" is selected, paste this shortcode into any post or page:', 'prolike-button' ); ?></p>
 						<div class="plb-code-row">
 							<code class="plb-code" id="plb-shortcode">[prolikebutton_shortcode]</code>
-							<button type="button" class="plb-btn-ghost" id="plb-copy"><?php _e( 'Copy', 'prolikebutton' ); ?></button>
+							<button type="button" class="plb-btn-ghost" id="plb-copy"><?php _e( 'Copy', 'prolike-button' ); ?></button>
 						</div>
 					</div>
 				</div>
@@ -583,7 +584,7 @@ function plb_prolike_deactivate(){
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolikebutton' ); ?></button>
+				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolike-button' ); ?></button>
 			</footer>
 			</div>
 
@@ -591,30 +592,30 @@ function plb_prolike_deactivate(){
 			<div class="plb-body-rows">
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Rate-limiting', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'Rate-limiting', 'prolike-button' ); ?></div>
 					<div class="plb-field">
-						<label class="plb-check"><input type="checkbox" name="rate_limit_enabled" value="yes"<?php echo $rate_limit_checked; ?>><?php _e('Block excessive voting from the same IP (max 10 votes/min, and max 1 vote per post/comment). Off by default — shared office/public IPs may otherwise share a single vote.', 'prolike');?></label>
+						<label class="plb-check"><input type="checkbox" name="rate_limit_enabled" value="yes"<?php echo $rate_limit_checked; ?>><?php _e('Block excessive voting from the same IP (max 10 votes/min, and max 1 vote per post/comment). Off by default — shared office/public IPs may otherwise share a single vote.', 'prolike-button');?></label>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'reCAPTCHA', 'prolikebutton' ); ?></div>
+					<div class="plb-label"><?php _e( 'reCAPTCHA', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
 						<select class="plb-select" name="recaptcha_version">
-							<option value="none" <?php selected($recaptcha_version_current, 'none'); ?>><?php _e('Off (default)', 'prolikebutton'); ?></option>
-							<option value="v2" <?php selected($recaptcha_version_current, 'v2'); ?>><?php _e('v2 — Checkbox', 'prolikebutton'); ?></option>
-							<option value="v3" <?php selected($recaptcha_version_current, 'v3'); ?>><?php _e('v3 — Invisible', 'prolikebutton'); ?></option>
+							<option value="none" <?php selected($recaptcha_version_current, 'none'); ?>><?php _e('Off (default)', 'prolike-button'); ?></option>
+							<option value="v2" <?php selected($recaptcha_version_current, 'v2'); ?>><?php _e('v2 — Checkbox', 'prolike-button'); ?></option>
+							<option value="v3" <?php selected($recaptcha_version_current, 'v3'); ?>><?php _e('v3 — Invisible', 'prolike-button'); ?></option>
 						</select>
-						<input type="text" class="plb-input" name="recaptcha_site_key" placeholder="<?php esc_attr_e('Site Key', 'prolikebutton'); ?>" value="<?php echo esc_attr($myrows[0]->recaptcha_site_key); ?>">
-						<input type="text" class="plb-input" name="recaptcha_secret_key" placeholder="<?php esc_attr_e('Secret Key', 'prolikebutton'); ?>" value="<?php echo esc_attr($myrows[0]->recaptcha_secret_key); ?>">
-						<p class="plb-help"><?php _e('Optional. Leave "Off" if you don\'t need it — voting works fine without reCAPTCHA. Get keys at google.com/recaptcha/admin.', 'prolikebutton'); ?></p>
+						<input type="text" class="plb-input" name="recaptcha_site_key" placeholder="<?php esc_attr_e('Site Key', 'prolike-button'); ?>" value="<?php echo esc_attr($myrows[0]->recaptcha_site_key); ?>">
+						<input type="text" class="plb-input" name="recaptcha_secret_key" placeholder="<?php esc_attr_e('Secret Key', 'prolike-button'); ?>" value="<?php echo esc_attr($myrows[0]->recaptcha_secret_key); ?>">
+						<p class="plb-help"><?php _e('Optional. Leave "Off" if you don\'t need it — voting works fine without reCAPTCHA. Get keys at google.com/recaptcha/admin.', 'prolike-button'); ?></p>
 					</div>
 				</div>
 
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolikebutton' ); ?></button>
+				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolike-button' ); ?></button>
 			</footer>
 			</div>
 		</form>
@@ -626,7 +627,7 @@ function plb_prolike_deactivate(){
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="btnSubmit" class="plb-save"><?php _e( 'Save Changes', 'prolikebutton' ); ?></button>
+				<button type="submit" name="btnSubmit" class="plb-save"><?php _e( 'Save Changes', 'prolike-button' ); ?></button>
 			</footer>
 		</form>
 

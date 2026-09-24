@@ -12,7 +12,7 @@ function plb_fill_views_column( $colname, $post_id ){
 	global $wpdb;
 	$current_like = get_the_ID();
 	$table_name_post = $wpdb->prefix . 'posts';
-    $carently_likes_dislikes = $wpdb->get_row("SELECT counter_like, counter_dislike FROM $table_name_post WHERE id = $current_like", ARRAY_A);
+    $carently_likes_dislikes = $wpdb->get_row( $wpdb->prepare( "SELECT counter_like, counter_dislike FROM %i WHERE id = %d", $table_name_post, $current_like ), ARRAY_A );
 	if( $colname === 'likes' ){
 		   print_r($carently_likes_dislikes['counter_like']);
 	}

@@ -15,7 +15,7 @@
 		global $wpdb;
 		$table_name_post = $wpdb->prefix . 'posts';
 		$counts = $wpdb->get_row(
-			$wpdb->prepare( "SELECT counter_like, counter_dislike FROM $table_name_post WHERE id = %d", $post_id ),
+			$wpdb->prepare( "SELECT counter_like, counter_dislike FROM %i WHERE id = %d", $table_name_post, $post_id ),
 			ARRAY_A
 		);
 		$likes = isset( $counts['counter_like'] ) ? (int) $counts['counter_like'] : 0;
@@ -73,7 +73,7 @@
 	function plb_get_schema_settings() {
 		global $wpdb;
 		$table = $wpdb->prefix . 'prolike';
-		$myrows = $wpdb->get_results( "SELECT * FROM $table WHERE id = 1" );
+		$myrows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM %i WHERE id = 1", $table ) );
 		if ( empty( $myrows ) || empty( $myrows[0]->schema_output ) || $myrows[0]->schema_output === 'none' ) {
 			return null;
 		}

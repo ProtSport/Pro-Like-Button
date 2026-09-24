@@ -3,7 +3,7 @@
 Contributors: protport4991
 Author: Andriy Prots
 Tags: like button, voting, rating, vote, like, dislike, contest, rate, like counter, likes counter, post, posts, wordpress, comments,  page, pages, ratings, reviews, seo, vote, votes, plugin, voting button, wordpress vote post, wp like post, wp like plugin
-Requires at least: 2.8
+Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 5.6
 Stable tag: 2.0
@@ -70,7 +70,8 @@ Add WooCommerce product support
 Redesign the plugin settings/admin pages
 Fix several PHP 8+ warnings (activation, save form, posts_clauses)
 Fix "Array to string conversion" notice in the shortcode handler
-Unify text domain to `prolike-button` across the codebase
+Security hardening: every remaining $wpdb query now goes through $wpdb->prepare() (including table/column names via %i), instead of raw string interpolation
+Unify text domain to `prolike-button` across the codebase, and add the missing Text Domain header
 
 = 1.0.5 =
 Security: fixed an unauthenticated SQL injection in the like/dislike AJAX handler (postid was concatenated into SQL; now validated as an integer and passed through $wpdb->prepare()). Reported by Enrico Marcolini, Claudio Marchesini and Dottor Marc.
