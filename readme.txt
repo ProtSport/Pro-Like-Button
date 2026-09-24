@@ -1,6 +1,6 @@
 === Pro Like Button ===
 
-Contributors: protsport4991
+Contributors: protport4991
 Author: Andriy Prots
 Tags: like button, voting, rating, vote, like, dislike, contest, rate, like counter, likes counter, post, posts, wordpress, comments,  page, pages, ratings, reviews, seo, vote, votes, plugin, voting button, wordpress vote post, wp like post, wp like plugin
 Requires at least: 6.2
