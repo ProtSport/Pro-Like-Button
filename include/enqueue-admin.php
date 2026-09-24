@@ -19,8 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 		wp_enqueue_style('plb_admin_css', plugins_url( '../assets/css/admin.css', __FILE__ ));
 		wp_enqueue_media();
-		wp_enqueue_script( 'ace',  plugins_url( '../assets/js/ace.js', __FILE__ ), array(), false, true );
-		wp_enqueue_script( 'admin_media', plugins_url( '../assets/js/admin_media.js', __FILE__ ), array('jquery', 'ace'), false, true );
+		wp_enqueue_script( 'ace',  plugins_url( '../assets/js/ace.js', __FILE__ ), array(), '2.0', true );
+		wp_enqueue_script( 'admin_media', plugins_url( '../assets/js/admin_media.js', __FILE__ ), array('jquery', 'ace'), '2.0', true );
 
 	}
 	add_action( 'admin_enqueue_scripts', 'plb_load_admin_scripts' );

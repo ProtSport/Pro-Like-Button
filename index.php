@@ -86,7 +86,7 @@ function plb_prolike_deactivate(){
 	function plb_your_style() {
 		$css = get_option( 'plb_your_style_css' );
 		$css = ( empty($css) ? '/* ProLike Button Custom CSS */' : $css );
-		echo '<div id="customCss">'.$css.'</div><textarea id="plb_your_style_css" name="plb_your_style_css" style="display:none;visibility:hidden;">'.$css.'</textarea>';
+		echo '<div id="customCss">' . esc_html( $css ) . '</div><textarea id="plb_your_style_css" name="plb_your_style_css" style="display:none;visibility:hidden;">' . esc_textarea( $css ) . '</textarea>';
 	}
 
 	function plb_like_genneral_page(){};
@@ -96,10 +96,10 @@ function plb_prolike_deactivate(){
 	function plb_background_image_like(){
 					$plb_bac_image = esc_attr(get_option('plb_background-image-field-like'));
 					if( empty(get_option('plb_background-image-field-like'))){
-						echo "<img class='wrapp_image_admin_like' src='".$plb_bac_image."'><br><input type='button' value='Upload Image' id='upload-button_like' class='upload_button'><input type='hidden' id='upload_image_like' value='". $plb_bac_image ."' name='plb_background-image-field-like'>";
+						echo "<img class='wrapp_image_admin_like' src='" . esc_attr( $plb_bac_image ) . "'><br><input type='button' value='Upload Image' id='upload-button_like' class='upload_button'><input type='hidden' id='upload_image_like' value='" . esc_attr( $plb_bac_image ) . "' name='plb_background-image-field-like'>";
 					}
 					else{
-						echo "<img class='wrapp_image_admin_like' src='".$plb_bac_image."'><br><input type='button' value='Change Image' id='upload-button_like' class='upload_button'><input type='hidden' id='upload_image_like' value='". $plb_bac_image ."' name='plb_background-image-field-like'><input type='button' value='Remove' id='remove_button_like'>";
+						echo "<img class='wrapp_image_admin_like' src='" . esc_attr( $plb_bac_image ) . "'><br><input type='button' value='Change Image' id='upload-button_like' class='upload_button'><input type='hidden' id='upload_image_like' value='" . esc_attr( $plb_bac_image ) . "' name='plb_background-image-field-like'><input type='button' value='Remove' id='remove_button_like'>";
 					}
 
 	}
@@ -107,10 +107,10 @@ function plb_prolike_deactivate(){
 	function plb_background_image_dislike(){
 					$plb_bac_image_dis = esc_attr(get_option('plb_background-image-field-dislike'));
 					if( empty(get_option('plb_background-image-field-dislike'))){
-						echo "<img class='wrapp_image_admin_dislike' src='".$plb_bac_image_dis."'><br><input type='button' value='Upload Image' id='upload-button_dislike' class='upload_button'><input type='hidden' id='upload_image_dislike' value='". $plb_bac_image_dis ."' name='plb_background-image-field-dislike'>";
+						echo "<img class='wrapp_image_admin_dislike' src='" . esc_attr( $plb_bac_image_dis ) . "'><br><input type='button' value='Upload Image' id='upload-button_dislike' class='upload_button'><input type='hidden' id='upload_image_dislike' value='" . esc_attr( $plb_bac_image_dis ) . "' name='plb_background-image-field-dislike'>";
 					}
 					else{
-						echo "<img class='wrapp_image_admin_dislike' src='".$plb_bac_image_dis."'><br><input type='button' value='Change Image' id='upload-button_dislike' class='upload_button'><input type='hidden' id='upload_image_dislike' value='". $plb_bac_image_dis ."' name='plb_background-image-field-dislike'><input type='button' value='Remove' id='remove_button_dislike'>";
+						echo "<img class='wrapp_image_admin_dislike' src='" . esc_attr( $plb_bac_image_dis ) . "'><br><input type='button' value='Change Image' id='upload-button_dislike' class='upload_button'><input type='hidden' id='upload_image_dislike' value='" . esc_attr( $plb_bac_image_dis ) . "' name='plb_background-image-field-dislike'><input type='button' value='Remove' id='remove_button_dislike'>";
 					}
 	}
 
@@ -385,12 +385,12 @@ function plb_prolike_deactivate(){
 	 <div class="plb-card">
 
 		<header class="plb-head">
-			<h1 class="plb-title"><?php _e( 'ProLike Button', 'prolike-button' ); ?></h1>
+			<h1 class="plb-title"><?php esc_html_e( 'ProLike Button', 'prolike-button' ); ?></h1>
 			<nav class="plb-tabs">
-				<button type="button" class="plb-tab is-active" data-tab="general"><?php _e( 'General setting', 'prolike-button' ); ?></button>
-				<button type="button" class="plb-tab" data-tab="shortcode"><?php _e( 'Shortcode', 'prolike-button' ); ?></button>
-				<button type="button" class="plb-tab" data-tab="antispam"><?php _e( 'Anti-spam', 'prolike-button' ); ?></button>
-				<button type="button" class="plb-tab" data-tab="custom"><?php _e( 'Custom', 'prolike-button' ); ?></button>
+				<button type="button" class="plb-tab is-active" data-tab="general"><?php esc_html_e( 'General setting', 'prolike-button' ); ?></button>
+				<button type="button" class="plb-tab" data-tab="shortcode"><?php esc_html_e( 'Shortcode', 'prolike-button' ); ?></button>
+				<button type="button" class="plb-tab" data-tab="antispam"><?php esc_html_e( 'Anti-spam', 'prolike-button' ); ?></button>
+				<button type="button" class="plb-tab" data-tab="custom"><?php esc_html_e( 'Custom', 'prolike-button' ); ?></button>
 			</nav>
 		</header>
 
@@ -413,44 +413,44 @@ function plb_prolike_deactivate(){
 			<div class="plb-body-rows">
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Where to display?', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Where to display?', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-inline">
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['4']; ?> value="4"><?php _e('Posts', 'prolike-button');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['8']; ?> value="8"><?php _e('Comments', 'prolike-button');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['1']; ?> value="1"><?php _e('Homepage', 'prolike-button');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['2']; ?> value="2"><?php _e('Pages', 'prolike-button');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['16']; ?> value="16"><?php _e('Archive page', 'prolike-button');?></label>
-						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo @$display['32']; ?> value="32"><?php _e('Products', 'prolike-button');?><?php echo class_exists('WooCommerce') ? '' : ' (' . esc_html__('requires WooCommerce', 'prolike-button') . ')'; ?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo isset( $display['4'] ) ? esc_attr( $display['4'] ) : ''; ?> value="4"><?php esc_html_e('Posts', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo isset( $display['8'] ) ? esc_attr( $display['8'] ) : ''; ?> value="8"><?php esc_html_e('Comments', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo isset( $display['1'] ) ? esc_attr( $display['1'] ) : ''; ?> value="1"><?php esc_html_e('Homepage', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo isset( $display['2'] ) ? esc_attr( $display['2'] ) : ''; ?> value="2"><?php esc_html_e('Pages', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo isset( $display['16'] ) ? esc_attr( $display['16'] ) : ''; ?> value="16"><?php esc_html_e('Archive page', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="display[]" <?php echo isset( $display['32'] ) ? esc_attr( $display['32'] ) : ''; ?> value="32"><?php esc_html_e('Products', 'prolike-button');?><?php echo class_exists('WooCommerce') ? '' : ' (' . esc_html__('requires WooCommerce', 'prolike-button') . ')'; ?></label>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Who can like?', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Who can like?', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
-						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo @$who_can_like['anyone']; ?> value="anyone"><?php _e('Anyone visiting', 'prolike-button');?></label>
-						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo @$who_can_like['members']; ?> value="members"><?php _e('Members only (logged in users)', 'prolike-button');?></label>
+						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo isset( $who_can_like['anyone'] ) ? esc_attr( $who_can_like['anyone'] ) : ''; ?> value="anyone"><?php esc_html_e('Anyone visiting', 'prolike-button');?></label>
+						<label class="plb-check"><input type="radio" name="who_can_like" <?php echo isset( $who_can_like['members'] ) ? esc_attr( $who_can_like['members'] ) : ''; ?> value="members"><?php esc_html_e('Members only (logged in users)', 'prolike-button');?></label>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e('Layout page', 'prolike-button');?></div>
+					<div class="plb-label"><?php esc_html_e('Layout page', 'prolike-button');?></div>
 					<div class="plb-field">
 						<div class="plb-segmented plb-layout-segmented" role="radiogroup" aria-label="<?php esc_attr_e('Layout page', 'prolike-button'); ?>">
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'with') ? ' is-active' : ''; ?>" data-value="with"><?php _e('With', 'prolike-button');?></button>
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'without') ? ' is-active' : ''; ?>" data-value="without"><?php _e('Without', 'prolike-button');?></button>
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutlike') ? ' is-active' : ''; ?>" data-value="withoutlike"><?php _e('Without Like', 'prolike-button');?></button>
-							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutdislike') ? ' is-active' : ''; ?>" data-value="withoutdislike"><?php _e('Without Dislike', 'prolike-button');?></button>
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'with') ? ' is-active' : ''; ?>" data-value="with"><?php esc_html_e('With', 'prolike-button');?></button>
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'without') ? ' is-active' : ''; ?>" data-value="without"><?php esc_html_e('Without', 'prolike-button');?></button>
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutlike') ? ' is-active' : ''; ?>" data-value="withoutlike"><?php esc_html_e('Without Like', 'prolike-button');?></button>
+							<button type="button" class="plb-seg<?php echo ($current_layout === 'withoutdislike') ? ' is-active' : ''; ?>" data-value="withoutdislike"><?php esc_html_e('Without Dislike', 'prolike-button');?></button>
 						</div>
 						<input type="hidden" name="layout" class="plb-layout-input" value="<?php echo esc_attr($current_layout); ?>">
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'View', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'View', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select like_form_select_image" name="view" id="view">
 						   <?php foreach ($likebtn_styles as $style): ?>
-                                <option <?php echo @$view[$style]; ?> value="<?php echo $style; ?>"><?php echo $style; ?></option>
+                                <option <?php echo isset( $view[$style] ) ? esc_attr( $view[$style] ) : ''; ?> value="<?php echo esc_attr( $style ); ?>"><?php echo esc_html( $style ); ?></option>
                             <?php endforeach ?>
 
 		                        </select>
@@ -461,34 +461,34 @@ function plb_prolike_deactivate(){
 												$carently_like_text = $wpdb->get_row( $wpdb->prepare( "SELECT view FROM %i", $table ), ARRAY_A );
 
 												if($carently_like_text['view'] === 'white'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image1.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image1.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'lightgray'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image2.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image2.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'black'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image3.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image3.png', __FILE__ ) );?>" alt="">
 												<?php }
 												else if($carently_like_text['view'] === 'smile'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image4.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image4.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'colorfull'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image5.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image5.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'check'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image6.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image6.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'updown'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image7.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image7.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'smilemodern'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image8.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image8.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'ok'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image9.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image9.png', __FILE__ ) );?>" alt="">
 												<?php  }
 												else if($carently_like_text['view'] === 'heart'){ ?>
-													<img src="<?php echo plugins_url('/assets/img/icon_button/image10.png', __FILE__ );?>" alt="">
+													<img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image10.png', __FILE__ ) );?>" alt="">
 												<?php }
 											?>
 
@@ -498,7 +498,7 @@ function plb_prolike_deactivate(){
 										  	<?php foreach ($likebtn_styles as $style): ?>
 
 
-				                    		<li data-number="<?php echo $counter_number; ?>"><img src="<?php echo plugins_url('/assets/img/icon_button/image'. $counter_image .'.png' , __FILE__ );?>"></li>
+				                    		<li data-number="<?php echo esc_attr( $counter_number ); ?>"><img src="<?php echo esc_url( plugins_url('/assets/img/icon_button/image'. $counter_image .'.png' , __FILE__ ) );?>"></li>
 				                    		<?php $counter_number++; $counter_image++; ?>
 				                    		<?php endforeach ?>
 										</ul>
@@ -508,7 +508,7 @@ function plb_prolike_deactivate(){
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Post like text', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Post like text', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-two">
 						<input type="text" class="plb-input" placeholder="Like" value="<?php echo esc_attr($myrows[0]->text_like);?>" name="text_like">
 						<input type="text" class="plb-input" placeholder="Dislike" value="<?php echo esc_attr($myrows[0]->text_dislike);?>" name="text_dislike">
@@ -516,53 +516,53 @@ function plb_prolike_deactivate(){
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Size', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Size', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select" name="btn_size" id="size">
-							<option <?php echo @$btn_size['small']; ?> value="small"><?php _e( 'Small', 'prolike-button' ); ?></option>
-							<option <?php echo @$btn_size['medium']; ?> value="medium"><?php _e( 'Medium', 'prolike-button' ); ?></option>
-							<option <?php echo @$btn_size['big']; ?> value="big"><?php _e( 'Big', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $btn_size['small'] ) ? esc_attr( $btn_size['small'] ) : ''; ?> value="small"><?php esc_html_e( 'Small', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $btn_size['medium'] ) ? esc_attr( $btn_size['medium'] ) : ''; ?> value="medium"><?php esc_html_e( 'Medium', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $btn_size['big'] ) ? esc_attr( $btn_size['big'] ) : ''; ?> value="big"><?php esc_html_e( 'Big', 'prolike-button' ); ?></option>
 						</select>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Position', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Position', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select" name="position" id="position">
-							<option <?php echo @$position['left']; ?> value="left"><?php _e( 'Left', 'prolike-button' ); ?></option>
-							<option <?php echo @$position['right']; ?> value="right"><?php _e( 'Right', 'prolike-button' ); ?></option>
-							<option <?php echo @$position['center']; ?> value="center"><?php _e( 'Center', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $position['left'] ) ? esc_attr( $position['left'] ) : ''; ?> value="left"><?php esc_html_e( 'Left', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $position['right'] ) ? esc_attr( $position['right'] ) : ''; ?> value="right"><?php esc_html_e( 'Right', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $position['center'] ) ? esc_attr( $position['center'] ) : ''; ?> value="center"><?php esc_html_e( 'Center', 'prolike-button' ); ?></option>
 						</select>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Before or after posts buttons', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Before or after posts buttons', 'prolike-button' ); ?></div>
 					<div class="plb-field">
 						<select class="plb-select" name="beforeafter" id="beforeafter">
-							<option <?php echo @$beforeafter['before']; ?> value="before"><?php _e( 'Before', 'prolike-button' ); ?></option>
-							<option <?php echo @$beforeafter['after']; ?> value="after"><?php _e( 'After', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $beforeafter['before'] ) ? esc_attr( $beforeafter['before'] ) : ''; ?> value="before"><?php esc_html_e( 'Before', 'prolike-button' ); ?></option>
+							<option <?php echo isset( $beforeafter['after'] ) ? esc_attr( $beforeafter['after'] ) : ''; ?> value="after"><?php esc_html_e( 'After', 'prolike-button' ); ?></option>
 						</select>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Structured data (SEO)', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Structured data (SEO)', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
 						<select class="plb-select" name="schema_output">
-							<option value="none" <?php selected($schema_output_current, 'none'); ?>><?php _e('Off (default)', 'prolike-button'); ?></option>
-							<option value="interaction-counter" <?php selected($schema_output_current, 'interaction-counter'); ?>><?php _e('Like/Dislike counts (InteractionCounter)', 'prolike-button'); ?></option>
-							<option value="aggregate-rating" <?php selected($schema_output_current, 'aggregate-rating'); ?>><?php _e('Rating out of 5, from like/dislike ratio (AggregateRating)', 'prolike-button'); ?></option>
+							<option value="none" <?php selected($schema_output_current, 'none'); ?>><?php esc_html_e('Off (default)', 'prolike-button'); ?></option>
+							<option value="interaction-counter" <?php selected($schema_output_current, 'interaction-counter'); ?>><?php esc_html_e('Like/Dislike counts (InteractionCounter)', 'prolike-button'); ?></option>
+							<option value="aggregate-rating" <?php selected($schema_output_current, 'aggregate-rating'); ?>><?php esc_html_e('Rating out of 5, from like/dislike ratio (AggregateRating)', 'prolike-button'); ?></option>
 						</select>
-						<p class="plb-help"><?php _e('Adds machine-readable vote data to single posts/pages for search engines and crawlers. Google does not show a dedicated rich result for likes specifically, so treat this as SEO hygiene, not a guaranteed search-result bonus.', 'prolike-button'); ?></p>
+						<p class="plb-help"><?php esc_html_e('Adds machine-readable vote data to single posts/pages for search engines and crawlers. Google does not show a dedicated rich result for likes specifically, so treat this as SEO hygiene, not a guaranteed search-result bonus.', 'prolike-button'); ?></p>
 					</div>
 				</div>
 
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolike-button' ); ?></button>
+				<button type="submit" name="update_prolike" class="plb-save"><?php esc_html_e( 'Save Settings', 'prolike-button' ); ?></button>
 			</footer>
 			</div>
 
@@ -570,16 +570,16 @@ function plb_prolike_deactivate(){
 			<div class="plb-body-rows">
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Output Like&Dislike Button shortcode', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Output Like&Dislike Button shortcode', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
 						<div class="plb-inline">
-							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo @$output_shortcode['yes']; ?> value="yes"><?php _e( 'Yes', 'prolike-button' ); ?></label>
-							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo @$output_shortcode['no']; ?> value="no"><?php _e( 'No', 'prolike-button' ); ?></label>
+							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo isset( $output_shortcode['yes'] ) ? esc_attr( $output_shortcode['yes'] ) : ''; ?> value="yes"><?php esc_html_e( 'Yes', 'prolike-button' ); ?></label>
+							<label class="plb-check"><input type="radio" name="output_shortcode" <?php echo isset( $output_shortcode['no'] ) ? esc_attr( $output_shortcode['no'] ) : ''; ?> value="no"><?php esc_html_e( 'No', 'prolike-button' ); ?></label>
 						</div>
-						<p class="plb-help"><?php _e( 'When "Yes" is selected, paste this shortcode into any post or page:', 'prolike-button' ); ?></p>
+						<p class="plb-help"><?php esc_html_e( 'When "Yes" is selected, paste this shortcode into any post or page:', 'prolike-button' ); ?></p>
 						<div class="plb-code-row">
 							<code class="plb-code" id="plb-shortcode">[prolikebutton_shortcode]</code>
-							<button type="button" class="plb-btn-ghost" id="plb-copy"><?php _e( 'Copy', 'prolike-button' ); ?></button>
+							<button type="button" class="plb-btn-ghost" id="plb-copy"><?php esc_html_e( 'Copy', 'prolike-button' ); ?></button>
 						</div>
 					</div>
 				</div>
@@ -587,7 +587,7 @@ function plb_prolike_deactivate(){
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolike-button' ); ?></button>
+				<button type="submit" name="update_prolike" class="plb-save"><?php esc_html_e( 'Save Settings', 'prolike-button' ); ?></button>
 			</footer>
 			</div>
 
@@ -595,30 +595,30 @@ function plb_prolike_deactivate(){
 			<div class="plb-body-rows">
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'Rate-limiting', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'Rate-limiting', 'prolike-button' ); ?></div>
 					<div class="plb-field">
-						<label class="plb-check"><input type="checkbox" name="rate_limit_enabled" value="yes"<?php echo $rate_limit_checked; ?>><?php _e('Block excessive voting from the same IP (max 10 votes/min, and max 1 vote per post/comment). Off by default — shared office/public IPs may otherwise share a single vote.', 'prolike-button');?></label>
+						<label class="plb-check"><input type="checkbox" name="rate_limit_enabled" value="yes"<?php echo esc_attr( $rate_limit_checked ); ?>><?php esc_html_e('Block excessive voting from the same IP (max 10 votes/min, and max 1 vote per post/comment). Off by default — shared office/public IPs may otherwise share a single vote.', 'prolike-button');?></label>
 					</div>
 				</div>
 
 				<div class="plb-row">
-					<div class="plb-label"><?php _e( 'reCAPTCHA', 'prolike-button' ); ?></div>
+					<div class="plb-label"><?php esc_html_e( 'reCAPTCHA', 'prolike-button' ); ?></div>
 					<div class="plb-field plb-stack">
 						<select class="plb-select" name="recaptcha_version">
-							<option value="none" <?php selected($recaptcha_version_current, 'none'); ?>><?php _e('Off (default)', 'prolike-button'); ?></option>
-							<option value="v2" <?php selected($recaptcha_version_current, 'v2'); ?>><?php _e('v2 — Checkbox', 'prolike-button'); ?></option>
-							<option value="v3" <?php selected($recaptcha_version_current, 'v3'); ?>><?php _e('v3 — Invisible', 'prolike-button'); ?></option>
+							<option value="none" <?php selected($recaptcha_version_current, 'none'); ?>><?php esc_html_e('Off (default)', 'prolike-button'); ?></option>
+							<option value="v2" <?php selected($recaptcha_version_current, 'v2'); ?>><?php esc_html_e('v2 — Checkbox', 'prolike-button'); ?></option>
+							<option value="v3" <?php selected($recaptcha_version_current, 'v3'); ?>><?php esc_html_e('v3 — Invisible', 'prolike-button'); ?></option>
 						</select>
 						<input type="text" class="plb-input" name="recaptcha_site_key" placeholder="<?php esc_attr_e('Site Key', 'prolike-button'); ?>" value="<?php echo esc_attr($myrows[0]->recaptcha_site_key); ?>">
 						<input type="text" class="plb-input" name="recaptcha_secret_key" placeholder="<?php esc_attr_e('Secret Key', 'prolike-button'); ?>" value="<?php echo esc_attr($myrows[0]->recaptcha_secret_key); ?>">
-						<p class="plb-help"><?php _e('Optional. Leave "Off" if you don\'t need it — voting works fine without reCAPTCHA. Get keys at google.com/recaptcha/admin.', 'prolike-button'); ?></p>
+						<p class="plb-help"><?php esc_html_e('Optional. Leave "Off" if you don\'t need it — voting works fine without reCAPTCHA. Get keys at google.com/recaptcha/admin.', 'prolike-button'); ?></p>
 					</div>
 				</div>
 
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="update_prolike" class="plb-save"><?php _e( 'Save Settings', 'prolike-button' ); ?></button>
+				<button type="submit" name="update_prolike" class="plb-save"><?php esc_html_e( 'Save Settings', 'prolike-button' ); ?></button>
 			</footer>
 			</div>
 		</form>
@@ -630,7 +630,7 @@ function plb_prolike_deactivate(){
 			</div>
 			<footer class="plb-foot">
 				<span class="plb-status" role="status"></span>
-				<button type="submit" name="btnSubmit" class="plb-save"><?php _e( 'Save Changes', 'prolike-button' ); ?></button>
+				<button type="submit" name="btnSubmit" class="plb-save"><?php esc_html_e( 'Save Changes', 'prolike-button' ); ?></button>
 			</footer>
 		</form>
 

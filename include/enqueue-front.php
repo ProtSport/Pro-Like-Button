@@ -222,7 +222,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 			if ( isset( $_COOKIE[ $cookie_key . $postid ] ) || ( $rate_limiting_on && plb_ip_already_voted( $type, $postid ) ) ) {
 				$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_like = %d WHERE %i = %d", $table_name_post, $var_like, $id_column, $postid ) );
-				echo $var_like;
+				echo esc_html( $var_like );
 				wp_die();
 			}
 			setcookie( $cookie_key . '_like' . $postid, '1', time() + 62208000, '/', $_SERVER['HTTP_HOST'] );
@@ -230,7 +230,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			// add like database and frontend
 			$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_like = %d WHERE %i = %d", $table_name_post, $var_like + 1, $id_column, $postid ) );
 			plb_log_vote( $type, $postid, 'like' );
-			echo $var_like + 1;
+			echo esc_html( $var_like + 1 );
 
 			wp_die();
 		}
@@ -249,7 +249,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			// check is there or not cookies, or this IP already voted on this item
 			if ( isset( $_COOKIE[ $cookie_key . $postid ] ) || ( $rate_limiting_on && plb_ip_already_voted( $type, $postid ) ) ) {
 				$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_dislike = %d WHERE %i = %d", $table_name_post, $var_dislike, $id_column, $postid ) );
-				echo $var_dislike;
+				echo esc_html( $var_dislike );
 				wp_die();
 			}
 			setcookie( $cookie_key . '_dislike' . $postid, '1', time() + 62208000, '/', $_SERVER['HTTP_HOST'] );
@@ -257,7 +257,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 			// add like database and frontend
 			$wpdb->query( $wpdb->prepare( "UPDATE %i SET counter_dislike = %d WHERE %i = %d", $table_name_post, $var_dislike - 1, $id_column, $postid ) );
 			plb_log_vote( $type, $postid, 'dislike' );
-			echo $var_dislike - 1;
+			echo esc_html( $var_dislike - 1 );
 
 			wp_die();
 		}

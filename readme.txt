@@ -2,9 +2,9 @@
 
 Contributors: protport4991
 Author: Andriy Prots
-Tags: like button, voting, rating, vote, like, dislike, contest, rate, like counter, likes counter, post, posts, wordpress, comments,  page, pages, ratings, reviews, seo, vote, votes, plugin, voting button, wordpress vote post, wp like post, wp like plugin
+Tags: like, like button, voting, rating, dislike
 Requires at least: 6.2
-Tested up to: 6.6
+Tested up to: 7.1
 Requires PHP: 5.6
 Stable tag: 2.0
 License: GPLv2 or later
