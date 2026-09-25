@@ -1,6 +1,6 @@
 === Pro Like Button ===
 
-Contributors: protsport4991
+Contributors: protport4991
 Author: Andriy Prots
 Tags: like, like button, voting, rating, dislike
 Requires at least: 6.2

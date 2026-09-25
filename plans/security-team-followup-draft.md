@@ -13,4 +13,4 @@ Everything from my previous email still applies (postid validated via absint() +
 Let me know if you need anything else, or once the listing can be restored.
 
 Thank you,
-Andriy Prots (wordpress.org: protsport4991)
+Andriy Prots (wordpress.org: protport4991)

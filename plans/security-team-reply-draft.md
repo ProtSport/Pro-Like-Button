@@ -22,4 +22,4 @@ The unauthenticated SQL injection in the like/dislike AJAX handler (`wp_ajax_nop
 Please let me know if you need anything else from me, or once commit access / the listing can be restored.
 
 Thank you,
-Andriy Prots (wordpress.org: protsport4991)
+Andriy Prots (wordpress.org: protport4991)
